@@ -12,18 +12,47 @@
 </head>
 
 <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module'
+        
 
         createApp({
             // exposed to all expressions
             members: 0,
             isReady: false,
+            newRegister: [],
             // methods
             confirmar() {
                 this.isReady = true
-                console.log(this.members + " Consola")
-                console.log(this.isReady + " Consola")
+                for (let index = 0; index < this.members; index++) {
+                    this.newRegister.push({
+                        name: "",
+                        section: "",
+                    })
+                }
+
+                console.log(this.members)
+            },
+
+            eliminar() {
+                this.newRegister = []
+                this.isReady = false
+                this.members = 0
+            },
+
+            addRegisters() {
+                this.newRegister.map(member => {
+                    console.log(member)
+                })
+
+                axios.post("http://localhost:8000/addUsers",this.newRegister)
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error =>{
+                    console.log(error)
+                })
             }
         }).mount()
     </script>
@@ -39,7 +68,6 @@
         </div>
     </nav>
 
-
     <div class="container mt-5" v-scope>
 
         <div class="row g-3 mb-5 justify-content-start">
@@ -48,40 +76,42 @@
                 <div class="d-flex">
                     <input type="number" class="form-control w-25 me-4" id="Confirmados" v-model="members">
                     <button class="btn btn-primary d-flex" @click="confirmar()">Confirmar</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div v-if="isReady" v-scope>
-            <div class="row g-3 mb-4" v-for="member in members">
-                <div class="col">
-                    <label for="NombreCompleto" class="form-label">Nombre Completo</label>
-                    <input type="text" class="form-control" id="NombreCompleto">
-                </div>
-                <div class="col">
-                    <label for="Seccion" class="form-label">Sección</label>
-                    <select class="form-select" id="Seccion">
-                        <option value="1">Papás o Invitado</option>
-                        <option value="2">Castores</option>
-                        <option value="3">Manada</option>
-                        <option value="4">Tropa</option>
-                        <option value="5">Comunidad De Caminantes</option>
-                        <option value="6">Clan de Rovers</option>
-                        <option value="7">Clan de Rovers</option>
-                    </select>
+                    <button class="btn btn-danger d-flex ms-3" @click="eliminar()">Limpiar</button>
                 </div>
             </div>
         </div>
-        
+
+        <div class="card mb-5" v-if="isReady" v-scope>
+            <div class="card-body mx-3 px-5 py-4 mt-4">
+                <p class="h4 mb-5">Datos de los miembros</p>
+                <div class="row g-3 mb-4" v-for="member in newRegister" :key="member">
+                    <div class="col">
+                        <label for="NombreCompleto" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="NombreCompleto" v-model.lazy="member.name">
+                    </div>
+                    <div class="col mb-3">
+                        <label for="Seccion" class="form-label">Sección</label>
+                        <select class="form-select" id="Seccion" v-model.lazy="member.section">
+                            <option value="Papás o Invitado">Papás o Invitado</option>
+                            <option value="Castores">Castores</option>
+                            <option value="Manada">Manada</option>
+                            <option value="Tropa">Tropa</option>
+                            <option value="Comunidad De Caminantes">Comunidad De Caminantes</option>
+                            <option value="Clan de Rovers">Clan de Rovers</option>
+                            <option value="Scouters o Dirigentes">Scouters o Dirigentes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary w-50 mx-auto mb-5" @click="addRegisters" v-scope>Enviar Registros</button>
+        </div>
+
         <div v-else>
-            <div class="spinner-border text-primary mx-auto" role="status">
+            <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
     </div>
-
-
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

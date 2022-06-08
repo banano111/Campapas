@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Campamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/petite-vue?module'
+
+        createApp({
+            // exposed to all expressions
+            user: "",
+            password: "",
+            isNotLogged: false,
+            loggedIn: true,
+            // methods
+            login() {
+
+                let correctUser = "barbas"
+                let correctPass = "glande69"
+
+                if (this.user == correctUser && this.password == correctPass) {
+                    this.isNotLogged = false
+                    this.loggedIn = true
+                    console.log("Correcto")
+                    console.log("isNotLogged: " + this.isNotLogged)
+                    console.log("loggedIn: " + this.loggedIn)
+                }
+
+                else {
+                    console.log("Datos Incorrectos")
+                }
+
+            },
+        }).mount()
+    </script>
+
+    <!-- Navegacion -->
+    <nav class="navbar nav-color">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <img src="/static/kuKkl-3umjcxz6q45aehbve4rsdiz6.png" alt="" width="60" height="60"
+                    class="d-inline-block align-middle">
+                Registro Campapás - Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <div class="container mt-5 w-50" v-if="isNotLogged" v-scope>
+        <div class="card p-4">
+            <div class="card-body">
+                <p class="h4 mb-5">Login</p>
+                <div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" v-model="user">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" v-model="password">
+                    </div>
+                    <button class="btn btn-primary mt-4" @click="login">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container table-striped w-50 mt-5" v-if="loggedIn" v-scope>
+        <div class="card p-3">
+            <div class="card-body">
+                <p class="h4 mb-4">Resumen de Asistentes por Seccion</p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre Completo</th>
+                            <th scope="col">Seccion</th>
+                        </tr>
+                    </thead>
+                    {% for member in data.RegisteredPeople%}
+                        <tbody>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{member.name}}</th>
+                            <td>{{member.section}}</th>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
