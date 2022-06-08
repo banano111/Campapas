@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Campamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/petite-vue?module'
+
+        createApp({
+            // exposed to all expressions
+            members: 0,
+            isReady: false,
+            // methods
+            confirmar() {
+                this.isReady = true
+                console.log(this.members + " Consola")
+                console.log(this.isReady + " Consola")
+            }
+        }).mount()
+    </script>
+
+    <!-- Navegacion -->
+    <nav class="navbar nav-color">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <img src="/static/kuKkl-3umjcxz6q45aehbve4rsdiz6.png" alt="" width="60" height="60"
+                    class="d-inline-block align-middle">
+                Registro Campapás
+            </a>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5" v-scope>
+
+        <div class="row g-3 mb-5 justify-content-start">
+            <div class="col">
+                <label for="Confirmados" class="form-label">Número de Miembros Confirmados</label>
+                <div class="d-flex">
+                    <input type="number" class="form-control w-25 me-4" id="Confirmados" v-model="members">
+                    <button class="btn btn-primary d-flex" @click="confirmar()">Confirmar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div v-if="isReady" v-scope>
+            <div class="row g-3 mb-4" v-for="member in members">
+                <div class="col">
+                    <label for="NombreCompleto" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="NombreCompleto">
+                </div>
+                <div class="col">
+                    <label for="Seccion" class="form-label">Sección</label>
+                    <select class="form-select" id="Seccion">
+                        <option value="1">Papás o Invitado</option>
+                        <option value="2">Castores</option>
+                        <option value="3">Manada</option>
+                        <option value="4">Tropa</option>
+                        <option value="5">Comunidad De Caminantes</option>
+                        <option value="6">Clan de Rovers</option>
+                        <option value="7">Clan de Rovers</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div v-else>
+            <div class="spinner-border text-primary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
