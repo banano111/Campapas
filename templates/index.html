@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module'
-        
+
 
         createApp({
             // exposed to all expressions
@@ -48,19 +48,35 @@
                     console.log(member)
                 })
 
-                axios.post("https://campapas.herokuapp.com/addUsers",this.newRegister)
-                .then(response => {
-                    this.newRegister = []
-                    this.isReady = false
-                    this.members = 0
-                    this.registCorrect = true
-                })
-                .catch(error =>{
-                    this.newRegister = []
-                    this.isReady = false
-                    this.members = 0
-                    this.registIncorrect = true
-                })
+                axios.post("https://campapas.herokuapp.com/addUsers", this.newRegister)
+                    .then(response => {
+                        
+                        setTimeout(() => {
+                            this.newRegister = []
+                            this.isReady = false
+                            this.members = 0
+                            this.registCorrect = true
+                        }, 2000);
+
+                        setTimeout(() => {
+                            this.registCorrect = false
+                        }, 1000);
+
+                    })
+                    .catch(error => {
+
+                        setTimeout(() => {
+                            this.newRegister = []
+                            this.isReady = false
+                            this.members = 0
+                            this.registIncorrect = true
+                        }, 2000);
+
+                        
+                        setTimeout(() => {
+                            this.registIncorrect = false
+                        }, 1000);
+                    })
             }
         }).mount()
     </script>
