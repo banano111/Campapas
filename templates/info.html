@@ -87,9 +87,11 @@
                     </thead>
                         <tbody>
                             {% for member in data.RegisteredPeople%}
-                                <th scope="row">{{loop.index}}</th>
-                                <td>{{member.name}}</td>
-                                <td>{{member.section}}</td>
+                                <tr>
+                                    <th scope="row">{{loop.index}}</th>
+                                    <td>{{member.name}}</td>
+                                    <td>{{member.section}}</td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                 </table>
