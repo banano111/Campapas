@@ -85,13 +85,13 @@
                             <th scope="col">Seccion</th>
                         </tr>
                     </thead>
-                    {% for member in data.RegisteredPeople%}
                         <tbody>
-                            <th scope="row">{{loop.index}}</th>
-                            <td>{{member.name}}</td>
-                            <td>{{member.section}}</td>
+                            {% for member in data.RegisteredPeople%}
+                                <th scope="row">{{loop.index}}</th>
+                                <td>{{member.name}}</td>
+                                <td>{{member.section}}</td>
+                            {% endfor %}
                         </tbody>
-                    {% endfor %}
                 </table>
             </div>
         </div>
