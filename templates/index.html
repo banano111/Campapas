@@ -24,6 +24,10 @@
             newRegister: [],
             registCorrect: false,
             registIncorrect: false,
+            fechaCamp: "",
+            tienda: "",
+            urldev: "http://localhost:8000",
+            urlprod: "https://campapas.herokuapp.com",
             // methods
             confirmar() {
                 this.isReady = true
@@ -44,13 +48,21 @@
             },
 
             addRegisters() {
+
                 this.newRegister.map(member => {
                     console.log(member)
                 })
 
-                axios.post("https://campapas.herokuapp.com/addUsers", this.newRegister)
+                let otherQuestions = {
+                    fechaCamp: this.fechaCamp,
+                    tienda: this.tienda
+                }
+
+                axios.post(this.urldev + "/addUsers", this.newRegister)
                     .then(response => {
-                        
+
+                        axios.post(this.urldev + "/addOtherCuestions", otherQuestions)
+
                         setTimeout(() => {
                             this.newRegister = []
                             this.isReady = false
@@ -72,7 +84,7 @@
                             this.registIncorrect = true
                         }, 2000);
 
-                        
+
                         setTimeout(() => {
                             this.registIncorrect = false
                         }, 1000);
@@ -134,7 +146,30 @@
                         </select>
                     </div>
                 </div>
+
+                <p class="h4 mt-5 mb-3">¿En que fecha te gustaría el campamento?</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="fecha" id="fecha1" value="Fecha1" v-model="fechaCamp">
+                    <label class="form-check-label" for="fecha1"> 1, 2 y 3 de Julio</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="fecha" id="fecha2" value="Fecha2" v-model="fechaCamp">
+                    <label class="form-check-label" for="fecha2">2 y 3 de Julio</label>
+                </div>
+
+                <p class="h4 mt-4 mb-3">¿Tienes Tienda de Campaña?</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tiendaCampar" id="tienda1" value="TiendaYes" v-model="tienda">
+                    <label class="form-check-label" for="tienda1">Si</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tiendaCampar" id="tienda2" value="TiendaNo" v-model="tienda">
+                    <label class="form-check-label" for="tienda2">No</label>
+                </div>
             </div>
+
+
+
             <button class="btn btn-primary w-50 mx-auto mb-5" @click="addRegisters" v-scope>Enviar Registros</button>
         </div>
 
