@@ -65,7 +65,7 @@ async def dashboard(request: Request):
     data2 = data2["OtherQuestion"]
 
     for other in data2:
-        if other["fechaCamp"] == "fecha1":
+        if other["fechaCamp"] == "Fecha1":
             fechaCamp1 += 1
         else:
             fechaCamp2 += 1
