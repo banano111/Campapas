@@ -7,16 +7,17 @@ from peewee import *
 import json
 
 
-db= SqliteDatabase('campapas.db')
+db = MySQLDatabase('campapas', user='xqqp2hmmrkwg', password='pscale_pw__g4UN3FQ0s-l3ONtGGiVp9hegkGjXyMuHgOa2XVMLEs',
+                         host='oq762iss76uk.us-east-4.psdb.cloud', port=3306)
 
-class RegisteredScouts(Model):
+class registeredscouts(Model):
     name = CharField()
     section = CharField()
 
     class Meta:
         database = db
 
-class OtherQuestions(Model):
+class otherquestions(Model):
     fechaCamp = CharField()
     tienda = CharField()
 
@@ -40,13 +41,13 @@ def dashboard(request: Request):
 
     db.connect()
 
-    data = RegisteredScouts.select()
-    data2 = OtherQuestions.select()
+    data = registeredscouts.select()
+    data2 = otherquestions.select()
 
     jsonStyle = { "RegisteredPeople": []}
     jsonStyle2 = { "OtherQuestion": []}
 
-    for member in RegisteredScouts.select():
+    for member in registeredscouts.select():
         memberData = {
             "name": member.name,
             "section": member.section
@@ -54,7 +55,7 @@ def dashboard(request: Request):
         
         jsonStyle["RegisteredPeople"].append(memberData)
 
-    for other in OtherQuestions.select():
+    for other in otherquestions.select():
         otherData = {
             "fechaCamp": other.fechaCamp,
             "tienda": other.tienda
@@ -139,7 +140,7 @@ async def addUsers(users: Request):
     data = await users.json()
     db.connect()
     for user in data:
-        RegisteredScouts.create(name=user["name"], section=user["section"])
+        registeredscouts.create(name=user["name"], section=user["section"])
     db.close()
     return { "user_added": "Usuario Agregado" }
 
@@ -148,6 +149,6 @@ async def addUsers(users: Request):
 async def addOthers(other: Request):
     data = await other.json()
     db.connect()
-    OtherQuestions.create(fechaCamp=data["fechaCamp"], tienda=data["tienda"])
+    otherquestions.create(fechaCamp=data["fechaCamp"], tienda=data["tienda"])
     db.close()
     return { "other_cuestions": "Added" }
