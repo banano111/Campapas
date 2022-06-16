@@ -58,10 +58,10 @@
                     tienda: this.tienda
                 }
 
-                axios.post(this.urlprod + "/addUsers", this.newRegister)
+                axios.post(this.urldev + "/addUsers", this.newRegister)
                     .then(response => {
 
-                        axios.post(this.urlprod + "/addOtherCuestions", otherQuestions)
+                        axios.post(this.urldev + "/addOtherCuestions", otherQuestions)
 
                         setTimeout(() => {
                             this.newRegister = []

@@ -23,29 +23,6 @@ class OtherQuestions(Model):
     class Meta:
         database = db
 
-def write_json(new_data, filename='data.json'):
-    with open(filename,'r+') as file:
-          # First we load existing data into a dict.
-        file_data = json.load(file)
-        # Join new_data with file_data inside emp_details
-        file_data["RegisteredPeople"].append(new_data)
-        # Sets file's current position at offset.
-        file.seek(0)
-        # convert back to json.
-        json.dump(file_data, file)
-
-def write_json2(new_data, filename='data2.json'):
-    with open(filename,'r+') as file:
-          # First we load existing data into a dict.
-        file_data = json.load(file)
-        # Join new_data with file_data inside emp_details
-        file_data["OtherQuestion"].append(new_data)
-        # Sets file's current position at offset.
-        file.seek(0)
-        # convert back to json.
-        json.dump(file_data, file)
-
-
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -59,7 +36,36 @@ async def home(request: Request):
     })
 
 @app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(request: Request):
+def dashboard(request: Request):
+
+    db.connect()
+
+    data = RegisteredScouts.select()
+    data2 = OtherQuestions.select()
+
+    jsonStyle = { "RegisteredPeople": []}
+    jsonStyle2 = { "OtherQuestion": []}
+
+    for member in RegisteredScouts.select():
+        memberData = {
+            "name": member.name,
+            "section": member.section
+        }
+        
+        jsonStyle["RegisteredPeople"].append(memberData)
+
+    for other in OtherQuestions.select():
+        otherData = {
+            "fechaCamp": other.fechaCamp,
+            "tienda": other.tienda
+        }
+        
+        jsonStyle2["OtherQuestion"].append(otherData)
+
+    db.close()
+    
+    dataMan = jsonStyle["RegisteredPeople"]
+    dataMan2 = jsonStyle2["OtherQuestion"]
 
     var1 = 0
     var2 = 0
@@ -75,15 +81,7 @@ async def dashboard(request: Request):
     tiendaS = 0
     tiendaN = 0
 
-    f = open('data.json')
-    dataSend = json.load(f)
-    data = dataSend["RegisteredPeople"]
-
-    g = open('data2.json')
-    data2 = json.load(g)
-    data2 = data2["OtherQuestion"]
-
-    for other in data2:
+    for other in dataMan2:
         if other["fechaCamp"] == "Fecha1":
             fechaCamp1 += 1
         else:
@@ -101,7 +99,7 @@ async def dashboard(request: Request):
         "tiendaN": tiendaN
     }
     
-    for member in data:
+    for member in dataMan:
         if member["section"] == "Papás o Invitado":
             var1 += 1
         elif member["section"] == "Castores":
@@ -131,7 +129,7 @@ async def dashboard(request: Request):
 
     return templates.TemplateResponse("info.html", {
         "request": request,
-        "data": dataSend,
+        "data": jsonStyle,
         "asistentes": countRegistered,
         "other": other
     })
@@ -139,17 +137,17 @@ async def dashboard(request: Request):
 @app.post("/addUsers")
 async def addUsers(users: Request):
     data = await users.json()
-
+    db.connect()
     for user in data:
-        write_json(user)
-
+        RegisteredScouts.create(name=user["name"], section=user["section"])
+    db.close()
     return { "user_added": "Usuario Agregado" }
 
 
 @app.post("/addOtherCuestions")
 async def addOthers(other: Request):
     data = await other.json()
-
-    write_json2(data)
-
+    db.connect()
+    OtherQuestions.create(fechaCamp=data["fechaCamp"], tienda=data["tienda"])
+    db.close()
     return { "other_cuestions": "Added" }
