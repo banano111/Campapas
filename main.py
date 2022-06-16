@@ -2,7 +2,26 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from peewee import *
+
 import json
+
+
+db= SqliteDatabase('campapas.db')
+
+class RegisteredScouts(Model):
+    name = CharField()
+    section = CharField()
+
+    class Meta:
+        database = db
+
+class OtherQuestions(Model):
+    fechaCamp = CharField()
+    tienda = CharField()
+
+    class Meta:
+        database = db
 
 def write_json(new_data, filename='data.json'):
     with open(filename,'r+') as file:
