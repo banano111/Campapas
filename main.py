@@ -3,17 +3,15 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from peewee import *
-from playhouse.mysql_ext import MySQLConnectorDatabase
+from playhouse.db_url import connect
 import os
-
-
 import json
 
 
 DATABASE_URL = os.environ['DATABASE_URL']
 
 
-db = PostgresqlDatabase(DATABASE_URL, sslmode='require')
+db = PostgresqlDatabase('d3tbuori30q68u', dsn=DATABASE_URL)
 
 class registeredscouts(Model):
     name = CharField()
