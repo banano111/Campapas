@@ -4,12 +4,16 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from peewee import *
 from playhouse.mysql_ext import MySQLConnectorDatabase
+import os
+
 
 import json
 
 
-db = PostgresqlDatabase('d3tbuori30q68u', user='zdzgshflyqdchg', password='31c427c0b71b2afe1c0cb1f7133b31f3c0e667c0cbefd91da4c0c63f8f583a12',
-                           host='ec2-54-147-33-38.compute-1.amazonaws.com', port=5432)
+DATABASE_URL = os.environ['DATABASE_URL']
+
+
+db = PostgresqlDatabase(DATABASE_URL, sslmode='require')
 
 class registeredscouts(Model):
     name = CharField()
