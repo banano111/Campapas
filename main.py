@@ -3,12 +3,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from peewee import *
+from playhouse.mysql_ext import MySQLConnectorDatabase
 
 import json
 
 
-db = MySQLDatabase('campapas', user='xqqp2hmmrkwg', password='pscale_pw__g4UN3FQ0s-l3ONtGGiVp9hegkGjXyMuHgOa2XVMLEs',
-                         host='oq762iss76uk.us-east-4.psdb.cloud', port=3306)
+db = PostgresqlDatabase('d3tbuori30q68u', user='zdzgshflyqdchg', password='31c427c0b71b2afe1c0cb1f7133b31f3c0e667c0cbefd91da4c0c63f8f583a12',
+                           host='ec2-54-147-33-38.compute-1.amazonaws.com', port=5432)
 
 class registeredscouts(Model):
     name = CharField()
@@ -23,6 +24,10 @@ class otherquestions(Model):
 
     class Meta:
         database = db
+
+db.connect()
+
+db.create_tables([registeredscouts, otherquestions])
 
 app = FastAPI()
 
