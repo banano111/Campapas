@@ -27,10 +27,6 @@ class otherquestions(Model):
     class Meta:
         database = db
 
-db.connect()
-
-db.create_tables([registeredscouts, otherquestions])
-
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
