@@ -140,10 +140,7 @@ def dashboard(request: Request):
 
 @app.post("/addUsers")
 async def addUsers(users: Request):
-    print("Se Ejectua Await JSON - Other")
     data = await users.json()
-    print(data)
-    print("Se Ejectua DB CONNECT - Other")
     db.connect()
     for user in data:
         registeredscouts.create(name=user["name"], section=user["section"])
@@ -153,10 +150,7 @@ async def addUsers(users: Request):
 
 @app.post("/addOtherCuestions")
 async def addOthers(other: Request):
-    print("Se Ejectua Await JSON - Other")
     data = await other.json()
-    print(data)
-    print("Se Ejectua DB CONNECT - Other")
     db.connect()
     otherquestions.create(fechaCamp=data["fechaCamp"], tienda=data["tienda"])
     db.close()
